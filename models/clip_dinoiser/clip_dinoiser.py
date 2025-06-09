@@ -12,7 +12,7 @@ import torchvision.transforms as T
 from mmseg.ops import resize
 from omegaconf import OmegaConf
 
-from models.builder import MODELS, build_model
+from clip_dinoiser.models.builder import MODELS, build_model
 
 NORMALIZE = T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
 
