@@ -11,8 +11,10 @@ import torch.nn.functional as F
 import torchvision.transforms as T
 from mmseg.ops import resize
 from omegaconf import OmegaConf
+import importlib.resources as pkg_resources
 
 from clip_dinoiser.models.builder import MODELS, build_model
+import clip_dinoiser.configs
 
 NORMALIZE = T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
 
@@ -36,7 +38,8 @@ class DinoCLIP(nn.Module):
         self.delta = delta
 
         # ==== build MaskCLIP backbone =====
-        maskclip_cfg = OmegaConf.load(f"configs/{clip_backbone}.yaml")
+        with pkg_resources.files(clip_dinoiser.configs).joinpath(f"{clip_backbone}.yaml").open('r') as f:
+            maskclip_cfg = OmegaConf.load(f)
         self.clip_backbone = build_model(maskclip_cfg["model"], class_names=class_names)
         for param in self.clip_backbone.parameters():
             param.requires_grad = False
