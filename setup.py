@@ -7,6 +7,7 @@ setup(
     include_package_data=True,
     package_data={
         "clip_dinoiser.configs": ["*.yaml"],
+        "clip_dinoiser.checkpoints": ["*.pt"],
     },
     install_requires=[
         # List dependencies here, or leave empty if you're managing them elsewhere
