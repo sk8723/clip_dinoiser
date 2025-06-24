@@ -189,3 +189,8 @@ class MaskClipHead(nn.Module):
         output = F.conv2d(feat, self.class_embeddings[:, :, None, None])
         output = F.softmax(output * 100, dim=1)
         return output
+    
+    def cls_seg_raw(self, feat):
+        feat = feat / feat.norm(dim=1, keepdim=True)
+        output = F.conv2d(feat, self.class_embeddings[:, :, None, None])
+        return output
