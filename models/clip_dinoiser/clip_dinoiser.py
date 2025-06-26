@@ -273,7 +273,7 @@ class CLIP_DINOiser(DinoCLIP):
 
         return bkg_out, corrs, clip_proj_feats
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x: torch.Tensor, apply_softmax=True, get_features=False):
         preds, corrs, output = self.forward_pass(x)
         B, C, hf, wf = output.shape
         preds = F.interpolate(preds, (hf, wf), mode="bilinear", align_corners=False)
@@ -284,7 +284,7 @@ class CLIP_DINOiser(DinoCLIP):
         out_feats = self.compute_weighted_pool(output, corrs)
 
         # Get the predictions --------------------------------------------------
-        output = self.clip_backbone.decode_head.cls_seg(out_feats)
+        output = self.clip_backbone.decode_head.cls_seg(out_feats, apply_softmax=apply_softmax)
 
         if self.apply_found:
             # Compute FOUND --------------------------------------------------
@@ -295,4 +295,4 @@ class CLIP_DINOiser(DinoCLIP):
             uncertain = (output.max(dim=1)[0] < self.delta).reshape(-1)
             output.reshape(1, nb_cls, -1)[:, 0, uncertain & (~r_hard_found.bool())] = 1.0  # background class
 
-        return output
+        return output if not get_features else (output, out_feats)
