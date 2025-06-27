@@ -4,7 +4,6 @@ setup(
     name="clip_dinoiser",
     version="0.1",
     packages=find_packages(),
-    include_package_data=True,
     package_data={
         "clip_dinoiser.configs": ["*.yaml"],
         "clip_dinoiser.checkpoints": ["*.pt"],
