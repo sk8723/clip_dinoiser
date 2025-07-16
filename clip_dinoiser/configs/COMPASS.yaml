@@ -10,7 +10,7 @@ model:
   vit_arch: vit_base
   vit_patch_size: 16
   enc_type_feats: "v"
-  gamma: 0.2
+  gamma: 0.4
   in_dim: 256
   delta: 0.99
   feats_idx: -3
